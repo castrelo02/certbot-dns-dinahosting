@@ -14,11 +14,11 @@ Installation
 
 ::
 
-    pip install git+https://github.com/rdrgzlng/certbot-dns-dinahosting.git@master
+    pip install git+https://github.com/castrelo02/certbot-dns-dinahosting.git@master
 
 or::
 
-    pip3 install git+https://github.com/rdrgzlng/certbot-dns-dinahosting.git@master
+    pip3 install git+https://github.com/castrelo02/certbot-dns-dinahosting.git@master
 
 
 Named Arguments
@@ -28,12 +28,12 @@ To start using DNS authentication for Dinahosting, pass the following arguments 
 certbot's command line:
 
 ================================================================= ==============================================
-``--authenticator certbot-dns-dinahosting:dns-dinahosting``       select the authenticator plugin (Required)
+``--authenticator dns-dinahosting``       select the authenticator plugin (Required)
 
-``--certbot-dns-dinahosting:dns-dinahosting-credentials``         dinahosting Remote User credentials
+``--dns-dinahosting-credentials``         dinahosting Remote User credentials
                                                                   INI file. (Required)
 
-``--certbot-dns-dinahosting:dns-dinahosting-propagation-seconds`` | waiting time for DNS to propagate before asking
+``--dns-dinahosting-propagation-seconds`` | waiting time for DNS to propagate before asking
                                                                   | the ACME server to verify the DNS record.
                                                                   | (Default: 10, Recommended: >= 600)
 ================================================================= ==============================================
@@ -49,11 +49,11 @@ An example ``credentials.ini`` file:
 
 .. code-block:: ini
 
-   certbot_dns_dinahosting:dns_dinahosting_username = myremoteuser
-   certbot_dns_dinahosting:dns_dinahosting_password = verysecureremoteuserpassword
+   dns_dinahosting_username = myremoteuser
+   dns_dinahosting_password = verysecureremoteuserpassword
 
 The path to this file can be provided interactively or using the
-``--certbot-dns-dinahosting:dns-dinahosting-credentials`` command-line argument. Certbot
+``--dns-dinahosting-credentials`` command-line argument. Certbot
 records the path to this file for use during renewal, but does not store the
 file's contents.
 
@@ -79,32 +79,35 @@ To acquire a certificate for ``example.com``
 
 .. code-block:: bash
 
-   certbot certonly \\
-     --authenticator certbot-dns-dinahosting:dns-dinahosting \\
-     --certbot-dns-dinahosting:dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
-     -d example.com
+   certbot certonly \
+     --authenticator dns-dinahosting \
+     --dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \
+     -d example.com \
+     -m email@example.com
 
 
 To acquire a single certificate for both ``example.com`` and ``www.example.com``
 
 .. code-block:: bash
 
-   certbot certonly \\
-     --authenticator certbot-dns-dinahosting:dns-dinahosting \\
-     --certbot-dns-dinahosting:dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
-     -d example.com \\
-     -d www.example.com
+   certbot certonly \
+     --authenticator dns-dinahosting \
+     --dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \
+     -d example.com \
+     -d www.example.com \
+     -m email@example.com
 
 
 To acquire a certificate for ``example.com``, waiting 60 seconds for DNS propagation
 
 .. code-block:: bash
 
-   certbot certonly \\
-     --authenticator certbot-dns-dinahosting:dns-dinahosting \\
-     --certbot-dns-dinahosting:dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
-     --certbot-dns-dinahosting:dns-dinahosting-propagation-seconds 60 \\
-     -d example.com
+   certbot certonly \
+     --authenticator dns-dinahosting \
+     --dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \
+     --dns-dinahosting-propagation-seconds 60 \
+     -d example.com \
+     -m email@example.com
 
 
 Docker
@@ -116,7 +119,7 @@ create an empty directory with the following ``Dockerfile``:
 .. code-block:: docker
 
     FROM certbot/certbot
-    RUN pip install git+https://github.com/rdrgzlng/certbot-dns-dinahosting.git@master
+    RUN pip install git+https://github.com/castrelo02/certbot-dns-dinahosting.git@master
 
 Proceed to build the image::
 
@@ -129,9 +132,9 @@ Once that's finished, the application can be run as follows::
        -v /etc/letsencrypt:/etc/letsencrypt \
        --cap-drop=all \
        certbot/dns-dinahosting certonly \
-       --authenticator certbot-dns-dinahosting:dns-dinahosting \
-       --certbot-dns-dinahosting:dns-dinahosting-propagation-seconds 900 \
-       --certbot-dns-dinahosting:dns-dinahosting-credentials \
+       --authenticator dns-dinahosting \
+       --dns-dinahosting-propagation-seconds 900 \
+       --dns-dinahosting-credentials \
            /etc/letsencrypt/.secrets/dinahosting.ini \
        --no-self-upgrade \
        --keep-until-expiring \

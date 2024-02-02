@@ -59,8 +59,8 @@ Examples
    :caption: To acquire a certificate for ``example.com``
 
    certbot certonly \\
-     --authenticator certbot-dns-dinahosting:dns-dinahosting \\
-     --certbot-dns-dinahosting:dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
+     --authenticator dns-dinahosting \\
+     --dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
      -d example.com
 
 .. code-block:: bash
@@ -68,19 +68,19 @@ Examples
              ``www.example.com``
 
    certbot certonly \\
-     --authenticator certbot-dns-dinahosting:dns-dinahosting \\
-     --certbot-dns-dinahosting:dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
+     --authenticator dns-dinahosting \\
+     --dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
      -d example.com \\
      -d www.example.com
 
 .. code-block:: bash
-   :caption: To acquire a certificate for ``example.com``, waiting 60 seconds
+   :caption: To acquire a certificate for ``example.com``, waiting 10 seconds
              for DNS propagation
 
    certbot certonly \\
-     --authenticator certbot-dns-dinahosting:dns-dinahosting \\
-     --certbot-dns-dinahosting:dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
-     --certbot-dns-dinahosting:dns-dinahosting-propagation-seconds 60 \\
+     --authenticator dns-dinahosting \\
+     --dns-dinahosting-credentials ~/.secrets/certbot/dinahosting.ini \\
+     --dns-dinahosting-propagation-seconds 60 \\
      -d example.com
 
 """
